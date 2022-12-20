@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEditorInternal;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Bird : MonoBehaviour
 {
@@ -15,14 +19,12 @@ public class Bird : MonoBehaviour
     {
         //Get reference to the Animator component attached to this GameObject.
         anim = GetComponent<Animator>();
-        //Get and store a reference to the Rigidbody2D attached to this GameObject.
         rb2d = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Don't allow control if the bird has died.
         if (isDead == false)
         {
             //Look for input to trigger a "flap".
@@ -34,20 +36,16 @@ public class Bird : MonoBehaviour
                 rb2d.velocity = Vector2.zero;
                 //   new Vector2(rb2d.velocity.x, 0);
                 //..giving the bird some upward force.
-                rb2d.AddForce(new Vector2(0, upForce));
+                rb2d.AddForce (new Vector2(0, upForce));
             }
         }
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        //Zero ou the bird's velocity
         rb2d.velocity = Vector2.zero;
-        //If the bird collides with something set it to dead...
         isDead = true;
-        //...tell the Animator about it...
         anim.SetTrigger ("Die");
-        //...and tell the game control about it.
         GameControl.instance.BirdDied();
     }
 }
